@@ -53,10 +53,6 @@ export default function UserRoutes(app) {
     };
 
     const profile = (req, res) => {
-        console.log("🔥 PROFILE HIT");
-        console.log("COOKIES:", req.headers.cookie);
-        console.log("SESSION:", req.session);
-
         const currentUser = req.session["currentUser"];
         if (!currentUser) {
             res.sendStatus(401);
