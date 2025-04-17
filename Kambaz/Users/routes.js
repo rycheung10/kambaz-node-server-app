@@ -123,6 +123,32 @@ export default function UserRoutes(app) {
         const courses = await enrollmentsDao.findCoursesForUser(uid);
         res.json(courses);
     };
+    const markPostAsRead = async (req, res) => {
+        const currentUser = req.session["currentUser"];
+        if (!currentUser) {
+            res.sendStatus(401);
+            return;
+        }
+    
+        const { postId } = req.params;
+        const user = await dao.findUserById(currentUser._id);
+    
+        if (!user.readPosts) {
+            user.readPosts = [];
+        }
+    
+        const idAsString = String(postId); // 👈 force to string
+    
+        if (!user.readPosts.includes(idAsString)) {
+            user.readPosts.push(idAsString);
+            await user.save();
+        }
+    
+        res.json(user.readPosts);
+    };
+    
+    app.post("/api/users/current/read/:postId", markPostAsRead);
+
     app.get("/api/users/:uid/courses", findCoursesForUser);
 
     app.post("/api/users/current/courses", createCourse);
@@ -136,4 +162,5 @@ export default function UserRoutes(app) {
     app.post("/api/users/signin", signin);
     app.post("/api/users/signout", signout);
     app.post("/api/users/profile", profile);
+
 }

@@ -16,6 +16,7 @@ const userSchema = new mongoose.Schema({
     section: String,
     lastActivity: Date,
     totalActivity: String,
+    readPosts: [{ type: String }]
   },
   { collection: "users" }
 );
