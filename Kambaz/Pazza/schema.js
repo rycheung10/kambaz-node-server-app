@@ -5,6 +5,16 @@ const answerSchema = new mongoose.Schema({
     author: String,
     role: String,
     createdAt: String,
+    resolved: Boolean,
+});
+
+const fudSchema = new mongoose.Schema({
+    body: String,
+    author: String,
+    role: String,
+    createdAt: String,
+    resolved: Boolean,
+    replies: [answerSchema],
 });
 
 const postSchema = new mongoose.Schema(
@@ -19,6 +29,7 @@ const postSchema = new mongoose.Schema(
         course: String,
         studentAnswers: answerSchema,
         instructorAnswers: answerSchema,
+        followUps: [fudSchema],
     },
     { collection: "pazza" } // 👈 this tells Mongoose to use the "pazza" collection
 );
