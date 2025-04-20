@@ -39,5 +39,37 @@ export default function CourseRoutes(app) {
         res.json(course);
     });
 
+    app.post("/api/courses/:courseId/folders", async (req, res) => {
+        const { courseId } = req.params;
+        const { name } = req.body;
+        const status = await dao.addFolderToCourse(courseId, name);
+        res.json(status);
+      });
+    
+      app.delete("/api/courses/:courseId/folders", async (req, res) => {
+        const { courseId } = req.params;
+        const { name } = req.body;
+        const status = await dao.removeFolderFromCourse(courseId, name);
+        res.json(status);
+      });
+    
+      app.put("/api/courses/:courseId/folders", async (req, res) => {
+        const { courseId } = req.params;
+        const { oldName, newName } = req.body;
+        const status = await dao.renameFolderInCourse(courseId, oldName, newName);
+        res.json(status);
+      });
 
+      app.get("/api/courses/:cid", async (req, res) => {
+        const { cid } = req.params;
+        try {
+          const course = await dao.findCourseById(cid);
+          if (!course) {
+            return res.status(404).send("Course not found");
+          }
+          res.json(course);
+        } catch (err) {
+          res.status(500).send(err.message);
+        }
+      });
 }
