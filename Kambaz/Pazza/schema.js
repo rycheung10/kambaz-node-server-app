@@ -30,6 +30,7 @@ const postSchema = new mongoose.Schema(
         studentAnswers: answerSchema,
         instructorAnswers: answerSchema,
         followUps: [fudSchema],
+        visibility: [String],
     },
     { collection: "pazza" } // 👈 this tells Mongoose to use the "pazza" collection
 );
